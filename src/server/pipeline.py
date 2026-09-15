@@ -57,6 +57,9 @@ def run_ranking_pipeline(candidates: list, config: dict) -> dict:
         c["scores"]["careerScore"] = round(min(100.0, exp_score), 1)
         
         # Dynamic Behavioral Score (Git commits/stars & response rate)
+        # Behavioral signals are currently synthetic, generated for prototype
+        # and scalability testing. In a production system, these would be
+        # replaced with real signals from integrated candidate data sources.
         github_commits = c.get("behavioral_signals", {}).get("github_commits_last_year", 0)
         response_rate = c.get("behavioral_signals", {}).get("recruiter_response_rate", 0.5)
         beh_score = (min(100.0, (github_commits / 150.0) * 40.0) + (response_rate * 60.0))
