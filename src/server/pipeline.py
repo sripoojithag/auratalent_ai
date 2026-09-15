@@ -30,8 +30,7 @@ def run_ranking_pipeline(candidates: list, config: dict) -> dict:
     weights = config.get("weights", {
         "semantic": 0.50,
         "skills": 0.25,
-        "career": 0.15,
-        "behavioral": 0.10
+        "career": 0.15
     })
     
     req_skills = set([s.lower() for s in parsed_features["requiredSkills"]])
@@ -56,22 +55,32 @@ def run_ranking_pipeline(candidates: list, config: dict) -> dict:
             exp_score += 20.0  # Bonus for meeting requirements
         c["scores"]["careerScore"] = round(min(100.0, exp_score), 1)
         
-        # Dynamic Behavioral Score (Git commits/stars & response rate)
-        # Behavioral signals are currently synthetic, generated for prototype
-        # and scalability testing. In a production system, these would be
-        # replaced with real signals from integrated candidate data sources.
-        github_commits = c.get("behavioral_signals", {}).get("github_commits_last_year", 0)
-        response_rate = c.get("behavioral_signals", {}).get("recruiter_response_rate", 0.5)
-        beh_score = (min(100.0, (github_commits / 150.0) * 40.0) + (response_rate * 60.0))
-        c["scores"]["behavioralScore"] = round(min(100.0, beh_score), 1)
+        # Behavioral Score
+# Behavioral signals are currently synthetic for prototype/testing.
+# In production, this would be calculated from real candidate data.
+
+        behavioral_signals = c.get("behavioral_signals", {})
+
+        if behavioral_signals:
+            github_commits = behavioral_signals.get("github_commits_last_year", 0)
+            response_rate = behavioral_signals.get("recruiter_response_rate", 0.5)
+
+            beh_score = (
+                min(100.0, (github_commits / 150.0) * 40.0)
+                + (response_rate * 60.0)
+            )
+
+            c["scores"]["behavioralScore"] = round(
+                min(100.0, beh_score), 1
+            )
+        else:
+            c["scores"]["behavioralScore"] = 0.0
         
         # Calculate Hybrid Final Score
         final_score = (
             weights.get("semantic", 0.50) * c["scores"]["semanticScore"] +
             weights.get("skills", 0.25) * c["scores"]["skillScore"] +
-            weights.get("career", 0.15) * c["scores"]["careerScore"] +
-            weights.get("behavioral", 0.10) * c["scores"]["behavioralScore"]
-        )
+            weights.get("career", 0.15) * c["scores"]["careerScore"]         )
         c["scores"]["finalScore"] = round(final_score, 1)
         
         # Heuristic explanation
