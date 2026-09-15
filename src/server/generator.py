@@ -67,6 +67,8 @@ def generate_candidate_dataset(size: int = 100000) -> list:
             
         skill_score = round(random.uniform(50.0, 95.0), 1)
         career_score = round(min(100.0, 40.0 + (exp_years * 4.0) + random.uniform(0, 15)), 1)
+        # Synthetic behavioral score used only for prototype/scalability testing.
+         # In production, this would be calculated from real behavioral signals.
         behavioral_score = round(random.uniform(60.0, 98.0), 1)
         
         scores = {
@@ -76,7 +78,9 @@ def generate_candidate_dataset(size: int = 100000) -> list:
             "behavioralScore": behavioral_score,
             "finalScore": 0.0
         }
-        
+        # Behavioral signals are intentionally empty because no real
+         # GitHub/recruiter data is currently integrated.
+
         behavioral_signals = {}
         
         candidates.append({
