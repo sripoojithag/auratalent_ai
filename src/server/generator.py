@@ -77,11 +77,7 @@ def generate_candidate_dataset(size: int = 100000) -> list:
             "finalScore": 0.0
         }
         
-        behavioral_signals = {
-            "github_stars": random.choices([0, random.randint(5, 450)], weights=[0.7, 0.3], k=1)[0],
-            "github_commits_last_year": random.randint(0, 450),
-            "recruiter_response_rate": round(random.uniform(0.35, 0.98), 2)
-        }
+        behavioral_signals = {}
         
         candidates.append({
             "candidate_id": c_id,
