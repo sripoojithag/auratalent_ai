@@ -415,19 +415,19 @@ export default function App() {
               <div className="bg-indigo-950/40 p-3 rounded-lg border border-indigo-800">
                 <span className="text-[10px] uppercase font-bold tracking-wider text-indigo-300">Stage 1: Vector Search</span>
                 <p className="text-[11px] text-indigo-100 mt-1 leading-normal">
-                  FAISS index screens the complete pool of 100,000 resume texts to immediately extract top candidates using sentence-transformers.
+                  Heuristic retrieval filters the candidate pool using required skills,experience requirements, and domain keywords to produce a smaller candidate set for semantic matching.
                 </p>
               </div>
               <div className="bg-indigo-950/40 p-3 rounded-lg border border-indigo-800">
                 <span className="text-[10px] uppercase font-bold tracking-wider text-indigo-300">Stage 2: Hybrid Scoring</span>
                 <p className="text-[11px] text-indigo-100 mt-1 leading-normal">
-                  Weights combine multi-dimensional scores: semantic alignment, required skill overlap, career tenure velocity, and behavioral commitment.
+                  Sentence embeddings and cosine similarity measure semantic alignment,then skill and experience signals are combined into a final candidate score.
                 </p>
               </div>
               <div className="bg-indigo-950/40 p-3 rounded-lg border border-indigo-800">
                 <span className="text-[10px] uppercase font-bold tracking-wider text-indigo-300">Stage 3: Generative AI Gap Analysis</span>
                 <p className="text-[11px] text-indigo-100 mt-1 leading-normal">
-                  Gemini inspects the best fits, pinpointing exact career progress matches, highlighting key matching indicators, and detailing potential risks.
+                  Gemini analyzes shortlisted candidates against the job description and generates concise, natural-language explanations of their fit.
                 </p>
               </div>
             </div>
